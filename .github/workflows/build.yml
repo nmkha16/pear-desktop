@@ -33,14 +33,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Vite build only for PRs
       - name: Vite Build
-        if: github.repository == 'pear-devs/pear-desktop' && github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request'
         run: pnpm build
-
-      # Full build + release only for main repo
+      
       - name: Build and release on Windows
-        if: github.repository == 'pear-devs/pear-desktop' && github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm release:win
